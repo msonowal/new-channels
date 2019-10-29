@@ -50,8 +50,14 @@ class TextlocalChannel
             return;
         }
 
+        // Get unicode parameter from notification class
+        $unicode = false;
+        if (isset($notification->is_sms_unicode)) {
+            $unicode = $notification->is_sms_unicode;
+        }
+
         try {
-            $response = $this->client->sendSms($numbers, $message, $this->sender);
+            $response = $this->client->sendSms($numbers, $message, $this->sender, $unicode);
 
             return json_decode(json_encode($response), true);
         } catch (\Exception $exception) {

@@ -52,12 +52,13 @@ class TextlocalChannel
 
         // Get unicode parameter from notification class
         $unicode = false;
-        if (isset($notification->is_sms_unicode)) {
-            $unicode = $notification->is_sms_unicode;
+        if (method_exists($notification, 'getUnicodeMode')) {
+            $unicode = $notification->getUnicodeMode();
         }
 
         try {
-            $response = $this->client->sendSms($numbers, $message, $this->sender, $unicode);
+            $response = $this->client->setUnicodeMode($unicode)
+            ->sendSms($numbers, $message, $this->sender);
 
             return json_decode(json_encode($response), true);
         } catch (\Exception $exception) {

@@ -168,6 +168,7 @@ class Textlocal
      * @param  $numbers
      * @param  $message
      * @param  $sender
+     * @param false $unicode
      * @param null  $sched
      * @param false $test
      * @param null  $receiptURL
@@ -179,7 +180,7 @@ class Textlocal
      *
      * @return array|mixed
      */
-    public function sendSms($numbers, $message, $sender, $sched = null, $test = false, $receiptURL = null, $custom = null, $optouts = false, $simpleReplyService = false)
+    public function sendSms($numbers, $message, $sender, $unicode = false, $sched = null, $test = false, $receiptURL = null, $custom = null, $optouts = false, $simpleReplyService = false)
     {
         if (! is_array($numbers)) {
             throw new Exception('Invalid $numbers format. Must be an array');
@@ -195,15 +196,16 @@ class Textlocal
         }
 
         $params = [
-        'message'       => rawurlencode($message),
-        'numbers'       => implode(',', $numbers),
-        'sender'        => rawurlencode($sender),
-        'schedule_time' => $sched,
-        'test'          => $test,
-        'receipt_url'   => $receiptURL,
-        'custom'        => $custom,
-        'optouts'       => $optouts,
-        'simple_reply'  => $simpleReplyService,
+            'message'       =>  rawurlencode($message),
+            'numbers'       =>  implode(',', $numbers),
+            'sender'        =>  rawurlencode($sender),
+            'schedule_time' =>  $sched,
+            'test'          =>  $test,
+            'receipt_url'   =>  $receiptURL,
+            'custom'        =>  $custom,
+            'optouts'       =>  $optouts,
+            'simple_reply'  =>  $simpleReplyService,
+            'unicode'       =>  (int)$unicode,
         ];
 
         return $this->_sendRequest('send', $params);
